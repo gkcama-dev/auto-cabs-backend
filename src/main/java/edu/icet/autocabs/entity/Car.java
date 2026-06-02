@@ -25,4 +25,8 @@ public class Car {
     private Double dailyPrice;
     private CarStatus status = CarStatus.AVAILABLE;
 
+    // Used by Spring Data for optimistic locking
+    @org.springframework.data.annotation.Version
+    private Integer version;
+
 }
