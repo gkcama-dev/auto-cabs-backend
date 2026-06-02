@@ -10,6 +10,7 @@ import edu.icet.autocabs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import edu.icet.autocabs.util.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Override
     public String registerUser(RegisterRequest request) {
@@ -51,9 +53,11 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid password!");
         }
 
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
+
         // Return success response with a dummy token
         return new AuthResponse(
-                "dummy-jwt-token",
+                token,
                 user.getEmail(),
                 user.getName(),
                 user.getRole().name()
