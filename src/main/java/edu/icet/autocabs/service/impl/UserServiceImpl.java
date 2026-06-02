@@ -7,8 +7,8 @@ import edu.icet.autocabs.entity.User;
 import edu.icet.autocabs.entity.UserRole;
 import edu.icet.autocabs.repository.UserRepository;
 import edu.icet.autocabs.service.UserService;
-import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String registerUser(RegisterRequest request) {
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(UserRole.CUSTOMER); //Default
 
         // Save db
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new RuntimeException("User not found!"));
 
         // Check if password matches
-        if(!user.getPassword().equals(request.getPassword())){
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid password!");
         }
 
