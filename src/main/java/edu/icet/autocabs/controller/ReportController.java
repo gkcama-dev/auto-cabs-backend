@@ -36,4 +36,10 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getBookingCountByPeriod(startDate, endDate));
     }
 
+    // Get customer rental behavior and spending analytics (Admin Dashboard)
+    @GetMapping("/customer-rental")
+    public ResponseEntity<java.util.List<java.util.Map<String, Object>>> getCustomerRentalReport() {
+        return ResponseEntity.ok(reportService.getCustomerRentalReport());
+    }
+
 }
