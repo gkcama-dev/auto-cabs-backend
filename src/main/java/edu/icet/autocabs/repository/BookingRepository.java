@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Repository
 public interface BookingRepository extends CrudRepository<Booking, Long> {
+
     // Fetch booking history for a specific user
     Iterable<Booking> findByUserId(Long userId);
 
@@ -20,5 +21,16 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     // Get total booking count within a specific date range
     @Query("SELECT COUNT(id) FROM booking WHERE booking_date BETWEEN :startDate AND :endDate")
     Long getBookingCountByPeriod(String startDate, String endDate);
-    
+
+    // Fetch customer rental analytics (Booking counts and total spending grouped by customer)
+    @Query("SELECT u.id as customer_id, u.name as customer_name, u.email as customer_email, " +
+            "COUNT(b.id) as total_bookings, COALESCE(SUM(b.total_price), 0) as total_spent " +
+            "FROM users u " +
+            "LEFT JOIN booking b ON u.id = b.customer_id " +
+            "WHERE u.role = 'CUSTOMER' " +
+            "GROUP BY u.id, u.name, u.email " +
+            "ORDER BY total_bookings DESC")
+
+    List<Map<String, Object>> getCustomerRentalAnalytics();
+
 }
