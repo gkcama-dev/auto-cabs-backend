@@ -16,4 +16,9 @@ public interface BookingRepository extends CrudRepository<Booking, Long> {
     // Fetch car utilization analytics (Booking counts grouped by car ID in descending order)
     @Query("SELECT car_id, COUNT(id) as booking_count FROM booking GROUP BY car_id ORDER BY booking_count DESC")
     List<Map<String, Object>> getCarUtilizationAnalytics();
+
+    // Get total booking count within a specific date range
+    @Query("SELECT COUNT(id) FROM booking WHERE booking_date BETWEEN :startDate AND :endDate")
+    Long getBookingCountByPeriod(String startDate, String endDate);
+    
 }
