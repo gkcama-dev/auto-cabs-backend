@@ -28,4 +28,12 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getCarUtilizationReport());
     }
 
+    // Get total booking count for a specific date range (Admin Analytics)
+    @GetMapping("/bookings/count")
+    public ResponseEntity<Long> getBookingCountByPeriod(
+            @org.springframework.web.bind.annotation.RequestParam String startDate,
+            @org.springframework.web.bind.annotation.RequestParam String endDate) {
+        return ResponseEntity.ok(reportService.getBookingCountByPeriod(startDate, endDate));
+    }
+
 }
