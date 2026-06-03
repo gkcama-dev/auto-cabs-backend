@@ -26,4 +26,10 @@ public class ReportServiceImpl implements ReportService {
         return bookingRepository.getCarUtilizationAnalytics();
     }
 
+    @Override
+    public Long getBookingCountByPeriod(String startDate, String endDate) {
+        // Fetch booking count for the specified date range from repository
+        return bookingRepository.getBookingCountByPeriod(startDate, endDate);
+    }
+
 }
