@@ -32,4 +32,9 @@ public class ReportServiceImpl implements ReportService {
         return bookingRepository.getBookingCountByPeriod(startDate, endDate);
     }
 
+    @Override
+    public List<Map<String, Object>> getCustomerRentalReport() {
+        return bookingRepository.getCustomerRentalAnalytics();
+    }
+
 }
