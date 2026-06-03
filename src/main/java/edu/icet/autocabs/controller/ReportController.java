@@ -16,9 +16,16 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    // Get total revenue earned from all payments (Admin Dashboard)
     @GetMapping("/revenue/total")
     public ResponseEntity<Double> getTotalRevenue() {
         return ResponseEntity.ok(reportService.getTotalRevenue());
+    }
+
+    // Get car utilization analytics report (Admin Dashboard)
+    @GetMapping("/car-utilization")
+    public ResponseEntity<java.util.List<java.util.Map<String, Object>>> getCarUtilizationReport() {
+        return ResponseEntity.ok(reportService.getCarUtilizationReport());
     }
 
 }
